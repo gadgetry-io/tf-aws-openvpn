@@ -9,6 +9,7 @@ resource "aws_instance" "openvpn" {
 
   vpc_security_group_ids = [
     "${aws_security_group.openvpn.id}",
+    "${var.custom_security_groups}",
   ]
 
   lifecycle {
