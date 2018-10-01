@@ -90,6 +90,12 @@ variable openvpn_reroute_dns {
 ### SECURITY GROUP CONFIGURATION
 ###############################################################################
 
+# List of additional security group ID's to add to EC2 instance
+variable custom_security_groups {
+  type = "list"
+  default = []
+}
+
 # WHITELIST CIDR_BLOCK(s) FOR ALL TRAFFIC (All TCP/UDP)
 # (e.g. Private CIDR_BLOCK)
 variable openvpn_all_access {
@@ -167,5 +173,5 @@ variable openvpn_ldap_add_req {
 variable openvpn_ldap_use_ssl {
   type = "string"
   default = "always"
-  
+
 }
