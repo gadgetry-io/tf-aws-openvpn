@@ -40,7 +40,7 @@ Access Server script ./sacli
             /stg                    # Staging Environment
             /prd                    # Production Environment
 
-    
+
 ### backend.tf
 
     terraform {
@@ -107,13 +107,14 @@ Access Server script ./sacli
         openvpn_all_access              = ["<cidr_block>","<cidr_block>]
         openvpn_ssh_access              = ["<cidr_block>","<cidr_block>]
         openvpn_ldap_server_1           = "<ldap_server>"  # e.g. ldap.jumpcloud.com
-        openvpn_ldap_server_2           = "<ldap_server>"  # e.g. ldap.jumpcloud.com  
+        openvpn_ldap_server_2           = "<ldap_server>"  # e.g. ldap.jumpcloud.com
         openvpn_ldap_bind_dn            = "uid=ldapuser,ou=Users,o=<account_id>,dc=jumpcloud,dc=com"
         openvpn_ldap_bind_pswd          = "${data.aws_ssm_parameter.openvpn_ldap_bind_pswd.value}"
         openvpn_ldap_base_dn            = "ou=Users,o=<account_id>,dc=jumpcloud,dc=com"
         openvpn_ldap_uname_attr         = "uid"
         openvpn_ldap_add_req            = "memberOf=cn=openvpn,ou=Users,o=<account_id>,dc=jumpcloud,dc=com"
         openvpn_ldap_use_ssl            = "always"
+        custom_security_groups          = ["<security group ID", "security group ID"]
     }
 
 ### providers.tf
