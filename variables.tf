@@ -175,3 +175,21 @@ variable openvpn_ldap_use_ssl {
   default = "always"
 
 }
+
+###############################################################################
+### HTTPS CERTIFICATE CONFIGURATION
+###############################################################################
+variable acme_registration_email {
+  description = "e-mail used to send notification prior to SSL/TLS cerfificate expiration"
+  type = "string"
+}
+
+variable aws_profile {
+  description = "AWS_PROFILE variable is required for configuring ACME certificate validaion"
+  type = "string"
+}
+
+variable aws_region {
+  description = "AWS_DEFAULT_REGION variable is required for configuring ACME certificate validaion"
+  type = "string"
+}

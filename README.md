@@ -115,6 +115,9 @@ Access Server script ./sacli
         openvpn_ldap_add_req            = "memberOf=cn=openvpn,ou=Users,o=<account_id>,dc=jumpcloud,dc=com"
         openvpn_ldap_use_ssl            = "always"
         custom_security_groups          = ["<security group ID", "security group ID"]
+        acme_registration_email         = "admin@example.com"
+        aws_profile                     = "<profile_name>"
+        aws_region                      = "us-east-1"
     }
 
 ### providers.tf

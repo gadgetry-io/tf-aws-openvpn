@@ -14,6 +14,9 @@ admin_pw=${admin_pswd}
 license=${license_key}
 reroute_gw=${reroute_gw}
 reroute_dns=${reroute_dns}
+private_key_pem=${private_key_pem}
+certificate_pem=${certificate_pem}
+issuer_pem=${issuer_pem}
 
 
 --===============BOUNDARY==
@@ -79,6 +82,12 @@ echo "--> SET MEMBEROF REQUIREMENT"
 # SET LDAP USE SSL
 echo "--> SET LDAP TO USE SSL"
 /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.use_ssl" --value "${ldap_use_ssl}" ConfigPut
+
+echo "--> CONFIGURE HTTPS CERTIFICATE"
+# CONFIGURE HTTPS CERTIFICATE
+/usr/local/openvpn_as/scripts/sacli --key "cs.priv_key"  --value "${private_key_pem}" ConfigPut
+/usr/local/openvpn_as/scripts/sacli --key "cs.cert"      --value "${certificate_pem}" ConfigPut
+/usr/local/openvpn_as/scripts/sacli --key "cs.ca_bundle" --value "${issuer_pem}"      ConfigPut
 
 echo "--> RESTART OPENVPN ACCESS SERVER TO SAVE AND APPLY CHANGES"
 
