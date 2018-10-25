@@ -20,7 +20,7 @@ This stack provisions an OpenVPN Access Server in the ${upper(terraform.workspac
 |Private DNS|${aws_instance.openvpn.private_dns}|
 |Private IP|${aws_instance.openvpn.private_ip}|
 |Public DNS|${var.openvpn_public_dns}|
-|Public IP|${aws_eip.openvpn.public_ip}|
+|Public IP|${local.public_ip}|
 
 
 ### USER DATA
