@@ -14,9 +14,6 @@ admin_pw=${admin_pswd}
 license=${license_key}
 reroute_gw=${reroute_gw}
 reroute_dns=${reroute_dns}
-private_key_pem=${private_key_pem}
-certificate_pem=${certificate_pem}
-issuer_pem=${issuer_pem}
 
 
 --===============BOUNDARY==
