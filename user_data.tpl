@@ -14,6 +14,7 @@ admin_pw=${admin_pswd}
 license=${license_key}
 reroute_gw=${reroute_gw}
 reroute_dns=${reroute_dns}
+use_google_auth=${use_google_auth}
 
 
 --===============BOUNDARY==
@@ -79,6 +80,12 @@ echo "--> SET MEMBEROF REQUIREMENT"
 # SET LDAP USE SSL
 echo "--> SET LDAP TO USE SSL"
 /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.use_ssl" --value "${ldap_use_ssl}" ConfigPut
+
+if [ ${use_google_auth} == 1 ]; then
+  echo "--> USE GOOGLE AUTHENTICATOR"
+  # USE GOOGLE AUTHENTICATOR
+  /usr/local/openvpn_as/scripts/sacli --key "vpn.server.google_auth.enable" --value "true" ConfigPut
+fi
 
 echo "--> RESTART OPENVPN ACCESS SERVER TO SAVE AND APPLY CHANGES"
 
