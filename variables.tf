@@ -175,3 +175,13 @@ variable openvpn_ldap_use_ssl {
   default = "always"
 
 }
+
+###############################################################################
+### GOOGLE AUTHENTICATOR CONFIGURATION
+###############################################################################
+variable use_google_auth {
+  default = "0"
+  type = "string"
+  description = "Use Google Authenticator for 2FA"
+}
+

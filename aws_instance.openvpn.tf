@@ -55,5 +55,6 @@ data "template_file" "user_data" {
     ldap_uname_attr="${var.openvpn_ldap_uname_attr}"
     ldap_add_req="${var.openvpn_ldap_add_req}"
     ldap_use_ssl="${var.openvpn_ldap_use_ssl}"
+    use_google_auth = "${var.use_google_auth}"
   }
 }
