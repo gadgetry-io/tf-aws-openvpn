@@ -23,19 +23,6 @@ resource "aws_instance" "openvpn" {
   }
 }
 
-# CREATE ELASTIC IP ADDRESS
-resource "aws_eip" "openvpn" {
-  instance          = "${aws_instance.openvpn.id}"
-  network_interface = "${aws_instance.openvpn.network_interface_id}"
-  vpc               = true
-}
-
-# ASSIGN ELASTIC IP ADDRESS
-resource "aws_eip_association" "openvpn" {
-  instance_id   = "${aws_instance.openvpn.id}"
-  allocation_id = "${aws_eip.openvpn.id}"
-}
-
 # USER DATA TEMPLATE TO PRE-CONFIGURE THE OPENVPN ACCESS SERVER
 data "template_file" "user_data" {
   template = "${file("${path.module}/user_data.tpl")}"
@@ -55,5 +42,6 @@ data "template_file" "user_data" {
     ldap_uname_attr="${var.openvpn_ldap_uname_attr}"
     ldap_add_req="${var.openvpn_ldap_add_req}"
     ldap_use_ssl="${var.openvpn_ldap_use_ssl}"
+    use_google_auth = "${var.use_google_auth}"
   }
 }

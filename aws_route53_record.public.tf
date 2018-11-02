@@ -4,5 +4,5 @@ resource "aws_route53_record" "public" {
   name    = "${var.openvpn_public_dns}"
   type    = "A"
   ttl     = "300"
-  records = ["${aws_eip.openvpn.public_ip}"]
+  records = ["${local.public_ip}"]
 }

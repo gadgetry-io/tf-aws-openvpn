@@ -175,3 +175,22 @@ variable openvpn_ldap_use_ssl {
   default = "always"
 
 }
+
+###############################################################################
+### USE PREALLOCATED FIXED ELASTIC IP
+###############################################################################
+variable public_ip {
+  default = ""
+  type = "string"
+  description = "To use preallocated static IP address, please set variable to existing EIP. If it's empty, it will be created dynamically."
+}
+
+###############################################################################
+### GOOGLE AUTHENTICATOR CONFIGURATION
+###############################################################################
+variable use_google_auth {
+  default = "0"
+  type = "string"
+  description = "Use Google Authenticator for 2FA"
+}
+
