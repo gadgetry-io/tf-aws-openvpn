@@ -115,6 +115,7 @@ Access Server script ./sacli
         openvpn_ldap_add_req            = "memberOf=cn=openvpn,ou=Users,o=<account_id>,dc=jumpcloud,dc=com"
         openvpn_ldap_use_ssl            = "always"
         custom_security_groups          = ["<security group ID", "security group ID"]
+        public_ip                       = "<ip_address>" or ""
     }
 
 ### providers.tf
