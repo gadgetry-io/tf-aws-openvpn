@@ -81,6 +81,11 @@ echo "--> SET MEMBEROF REQUIREMENT"
 echo "--> SET LDAP TO USE SSL"
 /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.use_ssl" --value "${ldap_use_ssl}" ConfigPut
 
+echo "APPLY FIX FOR WEB UI SLOWNESS"
+/usr/local/openvpn_as/scripts/sacli --key vpn.client.client_sockbuf --value 0 ConfigPut
+/usr/local/openvpn_as/scripts/sacli --key vpn.server.server_sockbuf_tcp --value 0 ConfigPut
+/usr/local/openvpn_as/scripts/sacli --key vpn.server.server_sockbuf_udp --value 0 ConfigPut
+
 if [ ${use_google_auth} == 1 ]; then
   echo "--> USE GOOGLE AUTHENTICATOR"
   # USE GOOGLE AUTHENTICATOR
