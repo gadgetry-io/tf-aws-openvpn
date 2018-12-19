@@ -49,37 +49,41 @@ echo "--> INSTALL AWS BINARY"
 rm "/root/awscli-bundle.zip"
 rm -rf "/root/awscli-bundle"
 
-# CONFIGURE LDAP AUTH
-echo "CONFIGURE: OPENVPN LDAP AUTHENTICATION"
-echo "--> SET LDAP AUTH"
-/usr/local/openvpn_as/scripts/sacli --key "auth.module.type" --value "ldap" ConfigPut
+if [ ${use_ldap} == 1 ]; then
+    echo "--> CONFIGURING LDAP"
+    # CONFIGURE LDAP AUTH
+    echo "CONFIGURE: OPENVPN LDAP AUTHENTICATION"
+    echo "--> SET LDAP AUTH"
+    /usr/local/openvpn_as/scripts/sacli --key "auth.module.type" --value "ldap" ConfigPut
 
-# SET LDAP SERVERS
-echo "--> SET LDAP SERVERS"
+    # SET LDAP SERVERS
+    echo "--> SET LDAP SERVERS"
 
-/usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.server.0.host" --value "${ldap_server_1}" ConfigPut
-/usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.server.1.host" --value "${ldap_server_2}" ConfigPut
+    /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.server.0.host" --value "${ldap_server_1}" ConfigPut
+    /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.server.1.host" --value "${ldap_server_2}" ConfigPut
 
-# SET LDAP BIND CREDENTIALS
-echo "--> SET LDAP BIND CREDENTIALS"
-/usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.bind_dn" --value "${ldap_bind_dn}" ConfigPut
-/usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.bind_pw" --value "${ldap_bind_pswd}" ConfigPut
+    # SET LDAP BIND CREDENTIALS
+    echo "--> SET LDAP BIND CREDENTIALS"
+    /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.bind_dn" --value "${ldap_bind_dn}" ConfigPut
+    /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.bind_pw" --value "${ldap_bind_pswd}" ConfigPut
 
-# SET LDAP BASE DN FOR USER SEARCH
-echo "--> SET BASE DN FOR USER SEARCH"
-/usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.users_base_dn" --value "${ldap_base_dn}" ConfigPut
+    # SET LDAP BASE DN FOR USER SEARCH
+    echo "--> SET BASE DN FOR USER SEARCH"
+    /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.users_base_dn" --value "${ldap_base_dn}" ConfigPut
 
-# SET LDAP USERNAME ATTRIBUTE
-echo "--> SET USERNAME ATTRIBUTE"
-/usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.uname_attr" --value "${ldap_uname_attr}" ConfigPut
+    # SET LDAP USERNAME ATTRIBUTE
+    echo "--> SET USERNAME ATTRIBUTE"
+    /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.uname_attr" --value "${ldap_uname_attr}" ConfigPut
 
-# SET LDAP ADDITIONAL MEMBEROF REQUIREMENT
-echo "--> SET MEMBEROF REQUIREMENT"
-/usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.add_req" --value "${ldap_add_req}" ConfigPut
+    # SET LDAP ADDITIONAL MEMBEROF REQUIREMENT
+    echo "--> SET MEMBEROF REQUIREMENT"
+    /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.add_req" --value "${ldap_add_req}" ConfigPut
 
-# SET LDAP USE SSL
-echo "--> SET LDAP TO USE SSL"
-/usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.use_ssl" --value "${ldap_use_ssl}" ConfigPut
+    # SET LDAP USE SSL
+    echo "--> SET LDAP TO USE SSL"
+    /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.use_ssl" --value "${ldap_use_ssl}" ConfigPut
+fi
+
 
 echo "APPLY FIX FOR WEB UI SLOWNESS"
 /usr/local/openvpn_as/scripts/sacli --key vpn.client.client_sockbuf --value 0 ConfigPut

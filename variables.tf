@@ -139,24 +139,35 @@ variable openvpn_udp_access {
 ### LDAP CONFIGURATION
 ###############################################################################
 
+variable use_ldap {
+  default = "1"
+  type = "string"
+  description = "Use LDAP for authentication"
+}
+
 variable openvpn_ldap_server_1 {
   type = "string"
+  default = ""
 }
 
 variable openvpn_ldap_server_2 {
   type = "string"
+  default = ""
 }
 
 variable openvpn_ldap_bind_dn {
   type = "string"
+  default = ""
 }
 
 variable openvpn_ldap_bind_pswd {
   type = "string"
+  default = ""
 }
 
 variable openvpn_ldap_base_dn {
   type = "string"
+  default = ""
 }
 
 variable openvpn_ldap_uname_attr {
@@ -168,12 +179,12 @@ variable openvpn_ldap_uname_attr {
 
 variable openvpn_ldap_add_req {
   type = "string"
+  default = ""
 }
 
 variable openvpn_ldap_use_ssl {
   type = "string"
   default = "always"
-
 }
 
 ###############################################################################
