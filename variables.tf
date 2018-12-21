@@ -225,3 +225,12 @@ variable use_lets_encrypt_staging {
   default = "0"
   description = "Should LetsEncrypt (if it's enabled) use staging to provision certificates. Enabling this is recommended if you're just testing your setup, as the LetsEncrypt production API's have very strict rate limits, with a long reset."
 }
+
+###############################################################################
+### Misc
+###############################################################################
+variable generate_readme {
+  type = "string"
+  default = "1"
+  description = "Should a readme file be generated"
+}
