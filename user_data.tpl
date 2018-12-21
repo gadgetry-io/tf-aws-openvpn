@@ -96,10 +96,22 @@ if [ ${use_google_auth} == 1 ]; then
   /usr/local/openvpn_as/scripts/sacli --key "vpn.server.google_auth.enable" --value "true" ConfigPut
 fi
 
-echo "--> RESTART OPENVPN ACCESS SERVER TO SAVE AND APPLY CHANGES"
+if [ ${use_lets_encrypt} == 1 ]; then
 
+    apt install -y curl libltdl7 python3 python3-pip python software-properties-common
+    add-apt-repository -y ppa:certbot/certbot
+    apt update -y
+    apt install -y certbot
+
+    echo "--> GENERATING LETSENCRYPT CERTIFICATES"
+
+    sudo service openvpnas stop
+    sudo certbot certonly --standalone --non-interactive --agree-tos --email ${lets_encrypt_email} --domains ${lets_encrypt_domain} --pre-hook 'service openvpnas stop' --post-hook 'service openvpnas start' ${lets_encrypt_environment}
+    sudo ln -s -f /etc/letsencrypt/live/${lets_encrypt_domain}/cert.pem /usr/local/openvpn_as/etc/web-ssl/server.crt
+    sudo ln -s -f /etc/letsencrypt/live/${lets_encrypt_domain}/privkey.pem /usr/local/openvpn_as/etc/web-ssl/server.key
+fi
 # RESTART OPENVPN ACCESS SERVER TO SAVE AND APPLY CONFIGURATION CHANGES
-/usr/local/openvpn_as/scripts/sacli start
+sudo service openvpnas restart
 
 
 --===============BOUNDARY==

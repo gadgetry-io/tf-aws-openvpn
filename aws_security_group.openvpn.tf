@@ -38,6 +38,18 @@ resource "aws_security_group_rule" "openvpn_https_access" {
   cidr_blocks       = ["${var.openvpn_https_access}"]
 }
 
+# This rule is necessary if you plan to use LetsEncrypt certbot. It needs access to port 80 without IP restrictions to
+# allow certbot to do it's automated verification
+resource "aws_security_group_rule" "openvpn_http_access" {
+  count             = "${var.use_lets_encrypt == "1" ? 1 : 0}"
+  type              = "ingress"
+  to_port           = 80
+  from_port         = 80
+  protocol          = "tcp"
+  security_group_id = "${aws_security_group.openvpn.id}"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
 resource "aws_security_group_rule" "openvpn_admin_access" {
   type              = "ingress"
   to_port           = 943

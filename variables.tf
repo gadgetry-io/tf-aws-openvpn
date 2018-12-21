@@ -205,3 +205,23 @@ variable use_google_auth {
   description = "Use Google Authenticator for 2FA"
 }
 
+###############################################################################
+### LetsEncrypt
+###############################################################################
+variable use_lets_encrypt {
+  type = "string"
+  default = "0"
+  description = "Should the VPN instance startup script use LetsEncrypt to automatically provision valid SSL certificates"
+}
+
+variable lets_encrypt_email {
+  type = "string"
+  default = "foo@example.com"
+  description = "E-mail address to which LetsEncrypt will send emails in case of issues with your certificates"
+}
+
+variable use_lets_encrypt_staging {
+  type = "string"
+  default = "0"
+  description = "Should LetsEncrypt (if it's enabled) use staging to provision certificates. Enabling this is recommended if you're just testing your setup, as the LetsEncrypt production API's have very strict rate limits, with a long reset."
+}
