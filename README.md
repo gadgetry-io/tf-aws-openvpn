@@ -109,6 +109,7 @@ Access Server script ./sacli
         openvpn_all_access              = ["<cidr_block>","<cidr_block>]
         openvpn_ssh_access              = ["<cidr_block>","<cidr_block>]
         openvpn_ldap_server_1           = "<ldap_server>"  # e.g. ldap.jumpcloud.com
+        use_ldap                        = "1"
         openvpn_ldap_server_2           = "<ldap_server>"  # e.g. ldap.jumpcloud.com
         openvpn_ldap_bind_dn            = "uid=ldapuser,ou=Users,o=<account_id>,dc=jumpcloud,dc=com"
         openvpn_ldap_bind_pswd          = "${data.aws_ssm_parameter.openvpn_ldap_bind_pswd.value}"
@@ -121,6 +122,7 @@ Access Server script ./sacli
         lets_encrypt_email              = "foo@example.com"
         custom_security_groups          = ["<security group ID", "security group ID"]
         public_ip                       = "<ip_address>" or ""
+        use_google_auth                 = "0" # Forces the use of a TOTP application to login
     }
 
 ### providers.tf
