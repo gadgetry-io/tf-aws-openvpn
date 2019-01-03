@@ -49,37 +49,41 @@ echo "--> INSTALL AWS BINARY"
 rm "/root/awscli-bundle.zip"
 rm -rf "/root/awscli-bundle"
 
-# CONFIGURE LDAP AUTH
-echo "CONFIGURE: OPENVPN LDAP AUTHENTICATION"
-echo "--> SET LDAP AUTH"
-/usr/local/openvpn_as/scripts/sacli --key "auth.module.type" --value "ldap" ConfigPut
+if [ ${use_ldap} == 1 ]; then
+    echo "--> CONFIGURING LDAP"
+    # CONFIGURE LDAP AUTH
+    echo "CONFIGURE: OPENVPN LDAP AUTHENTICATION"
+    echo "--> SET LDAP AUTH"
+    /usr/local/openvpn_as/scripts/sacli --key "auth.module.type" --value "ldap" ConfigPut
 
-# SET LDAP SERVERS
-echo "--> SET LDAP SERVERS"
+    # SET LDAP SERVERS
+    echo "--> SET LDAP SERVERS"
 
-/usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.server.0.host" --value "${ldap_server_1}" ConfigPut
-/usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.server.1.host" --value "${ldap_server_2}" ConfigPut
+    /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.server.0.host" --value "${ldap_server_1}" ConfigPut
+    /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.server.1.host" --value "${ldap_server_2}" ConfigPut
 
-# SET LDAP BIND CREDENTIALS
-echo "--> SET LDAP BIND CREDENTIALS"
-/usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.bind_dn" --value "${ldap_bind_dn}" ConfigPut
-/usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.bind_pw" --value "${ldap_bind_pswd}" ConfigPut
+    # SET LDAP BIND CREDENTIALS
+    echo "--> SET LDAP BIND CREDENTIALS"
+    /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.bind_dn" --value "${ldap_bind_dn}" ConfigPut
+    /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.bind_pw" --value "${ldap_bind_pswd}" ConfigPut
 
-# SET LDAP BASE DN FOR USER SEARCH
-echo "--> SET BASE DN FOR USER SEARCH"
-/usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.users_base_dn" --value "${ldap_base_dn}" ConfigPut
+    # SET LDAP BASE DN FOR USER SEARCH
+    echo "--> SET BASE DN FOR USER SEARCH"
+    /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.users_base_dn" --value "${ldap_base_dn}" ConfigPut
 
-# SET LDAP USERNAME ATTRIBUTE
-echo "--> SET USERNAME ATTRIBUTE"
-/usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.uname_attr" --value "${ldap_uname_attr}" ConfigPut
+    # SET LDAP USERNAME ATTRIBUTE
+    echo "--> SET USERNAME ATTRIBUTE"
+    /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.uname_attr" --value "${ldap_uname_attr}" ConfigPut
 
-# SET LDAP ADDITIONAL MEMBEROF REQUIREMENT
-echo "--> SET MEMBEROF REQUIREMENT"
-/usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.add_req" --value "${ldap_add_req}" ConfigPut
+    # SET LDAP ADDITIONAL MEMBEROF REQUIREMENT
+    echo "--> SET MEMBEROF REQUIREMENT"
+    /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.add_req" --value "${ldap_add_req}" ConfigPut
 
-# SET LDAP USE SSL
-echo "--> SET LDAP TO USE SSL"
-/usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.use_ssl" --value "${ldap_use_ssl}" ConfigPut
+    # SET LDAP USE SSL
+    echo "--> SET LDAP TO USE SSL"
+    /usr/local/openvpn_as/scripts/sacli --key "auth.ldap.0.use_ssl" --value "${ldap_use_ssl}" ConfigPut
+fi
+
 
 echo "APPLY FIX FOR WEB UI SLOWNESS"
 /usr/local/openvpn_as/scripts/sacli --key vpn.client.client_sockbuf --value 0 ConfigPut
@@ -92,10 +96,22 @@ if [ ${use_google_auth} == 1 ]; then
   /usr/local/openvpn_as/scripts/sacli --key "vpn.server.google_auth.enable" --value "true" ConfigPut
 fi
 
-echo "--> RESTART OPENVPN ACCESS SERVER TO SAVE AND APPLY CHANGES"
+if [ ${use_lets_encrypt} == 1 ]; then
 
+    apt install -y curl libltdl7 python3 python3-pip python software-properties-common
+    add-apt-repository -y ppa:certbot/certbot
+    apt update -y
+    apt install -y certbot
+
+    echo "--> GENERATING LETSENCRYPT CERTIFICATES"
+
+    sudo service openvpnas stop
+    sudo certbot certonly --standalone --non-interactive --agree-tos --email ${lets_encrypt_email} --domains ${lets_encrypt_domain} --pre-hook 'service openvpnas stop' --post-hook 'service openvpnas start' ${lets_encrypt_environment}
+    sudo ln -s -f /etc/letsencrypt/live/${lets_encrypt_domain}/cert.pem /usr/local/openvpn_as/etc/web-ssl/server.crt
+    sudo ln -s -f /etc/letsencrypt/live/${lets_encrypt_domain}/privkey.pem /usr/local/openvpn_as/etc/web-ssl/server.key
+fi
 # RESTART OPENVPN ACCESS SERVER TO SAVE AND APPLY CONFIGURATION CHANGES
-/usr/local/openvpn_as/scripts/sacli start
+sudo service openvpnas restart
 
 
 --===============BOUNDARY==

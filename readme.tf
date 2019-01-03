@@ -129,6 +129,7 @@ EOF
 }
 
 resource "local_file" "readme" {
+  count = "${var.generate_readme == "1" ? 1 : 0}"
   content  = "${data.template_file.readme.rendered}"
   filename = "${path.root}/README.${upper(terraform.workspace)}.md"
 }

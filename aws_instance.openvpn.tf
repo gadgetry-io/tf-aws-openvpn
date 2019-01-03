@@ -34,6 +34,7 @@ data "template_file" "user_data" {
     license_key="${var.openvpn_license}"
     reroute_gw="${var.openvpn_reroute_gw}"
     reroute_dns="${var.openvpn_reroute_dns}"
+    use_ldap="${var.use_ldap}"
     ldap_server_1="${var.openvpn_ldap_server_1}"
     ldap_server_2="${var.openvpn_ldap_server_2}"
     ldap_bind_dn="${var.openvpn_ldap_bind_dn}"
@@ -43,5 +44,9 @@ data "template_file" "user_data" {
     ldap_add_req="${var.openvpn_ldap_add_req}"
     ldap_use_ssl="${var.openvpn_ldap_use_ssl}"
     use_google_auth = "${var.use_google_auth}"
+    use_lets_encrypt = "${var.use_lets_encrypt}"
+    lets_encrypt_domain = "${var.openvpn_public_dns}"
+    lets_encrypt_email = "${var.lets_encrypt_email}"
+    lets_encrypt_environment = "${var.use_lets_encrypt_staging == 1 ? "--staging": ""}"
   }
 }
